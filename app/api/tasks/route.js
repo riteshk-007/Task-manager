@@ -18,3 +18,16 @@ export const POST = async (req) => {
     );
   }
 };
+
+export const GET = async (req) => {
+  await connectDB();
+  try {
+    const tasks = await Task.find({});
+    return NextResponse.json(tasks, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: "failed to fetch Tasks!" },
+      { status: 500 }
+    );
+  }
+};
