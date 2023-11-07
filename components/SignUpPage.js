@@ -1,6 +1,15 @@
+"use client";
+import { Context } from "@/context/ContextApi";
 import Link from "next/link";
+import { useContext } from "react";
 
 const SignUpPage = () => {
+  const { registerUser, setRegisterUser, handleSignupSubmit } =
+    useContext(Context);
+
+  const handleChange = (e) => {
+    setRegisterUser({ ...registerUser, [e.target.name]: e.target.value });
+  };
   return (
     <section className="text-gray-600 body-font w-full flex items-center justify-center h-screen">
       <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
@@ -21,7 +30,7 @@ const SignUpPage = () => {
           </div>
 
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-            <form className="space-y-6" action="#" method="POST">
+            <form className="space-y-6" onSubmit={handleSignupSubmit}>
               <div>
                 <label
                   htmlFor="email"
@@ -37,6 +46,8 @@ const SignUpPage = () => {
                     autoComplete="name"
                     required
                     placeholder="Name"
+                    value={registerUser.name}
+                    onChange={handleChange}
                     className="block w-full px-3 rounded-md border-0 py-1.5 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -56,6 +67,8 @@ const SignUpPage = () => {
                     autoComplete="email"
                     required
                     placeholder="Email address"
+                    value={registerUser.email}
+                    onChange={handleChange}
                     className="block w-full px-3 rounded-md border-0 py-1.5 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
                   />
                 </div>
@@ -86,6 +99,8 @@ const SignUpPage = () => {
                     autoComplete="current-password"
                     required
                     placeholder="********"
+                    value={registerUser.password}
+                    onChange={handleChange}
                     className="block w-full px-3 rounded-md border-0 py-1.5 text-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm sm:leading-6"
                   />
                 </div>
