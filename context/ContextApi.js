@@ -1,5 +1,7 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { createContext, useState } from "react";
+import toast from "react-hot-toast";
 
 export const Context = createContext();
 
@@ -13,10 +15,34 @@ const ContextProvider = ({ children }) => {
     email: "",
     password: "",
   });
-
+  const router = useRouter();
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
-    console.log(registerUser);
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: registerUser.name,
+          email: registerUser.email,
+          password: registerUser.password,
+        }),
+      });
+      const data = await res.json();
+      if (data) {
+        toast.success("Registration Successfull");
+        router.push("/login");
+        setRegisterUser({
+          name: "",
+          email: "",
+          password: "",
+        });
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
