@@ -34,4 +34,16 @@ export const PUT = async (req, { params }) => {
     );
   }
 };
-export const DELETE = async (req, { params }) => {};
+export const DELETE = async (req, { params }) => {
+  const { taskId } = params;
+  try {
+    const task = await Task.findByIdAndDelete(taskId);
+    return NextResponse.json(task, { status: 200 });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json(
+      { message: "failed to delete Task!" },
+      { status: 500 }
+    );
+  }
+};
