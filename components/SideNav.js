@@ -2,12 +2,13 @@
 import Link from "next/link";
 import { FaHome, FaBars, FaUserTie } from "react-icons/fa";
 import { BsListTask } from "react-icons/bs";
-// import { FaUserTie } from "react-icons/gr";
-import { MdLogout, MdClose } from "react-icons/md";
-import { useState } from "react";
+import { MdClose, MdLogout } from "react-icons/md";
+import { useContext, useState } from "react";
+import { Context } from "@/context/ContextApi";
 
 const SideNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { handleLogoutUser } = useContext(Context);
   return (
     <div>
       <button
@@ -49,7 +50,7 @@ const SideNav = () => {
             </h1>
           </Link>
           <ul className="flex items-center justify-start my-5 flex-col gap-5 text-white">
-            <li className="flex w-full rounded-md">
+            <li className="flex w-full rounded-md cursor-pointer">
               <Link
                 href="/dashboard"
                 className="flex  items-center justify-start gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md w-full hover:shadow-md"
@@ -58,7 +59,7 @@ const SideNav = () => {
                 Home
               </Link>
             </li>
-            <li className="flex w-full rounded-md">
+            <li className="flex w-full rounded-md cursor-pointer">
               <Link
                 href="/dashboard"
                 className="flex  items-center justify-start gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md w-full hover:shadow-md"
@@ -67,7 +68,7 @@ const SideNav = () => {
                 Task
               </Link>
             </li>
-            <li className="flex w-full rounded-md">
+            <li className="flex w-full rounded-md cursor-pointer">
               <Link
                 href="/dashboard"
                 className="flex  items-center justify-start gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md w-full hover:shadow-md"
@@ -76,8 +77,11 @@ const SideNav = () => {
                 User
               </Link>
             </li>
-            <li className="flex w-full rounded-md">
-              <span className="flex  items-center justify-start gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md w-full hover:shadow-md">
+            <li className="flex w-full rounded-md cursor-pointer">
+              <span
+                onClick={handleLogoutUser}
+                className="flex  items-center justify-start gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md w-full hover:shadow-md"
+              >
                 <MdLogout />
                 Logout
               </span>

@@ -16,6 +16,8 @@ const ContextProvider = ({ children }) => {
     password: "",
   });
   const router = useRouter();
+
+  // Signup User Function
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -44,6 +46,8 @@ const ContextProvider = ({ children }) => {
       toast.error(error.message);
     }
   };
+
+  // Login User Function
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -72,6 +76,25 @@ const ContextProvider = ({ children }) => {
       toast.error(error.message);
     }
   };
+
+  // Logout User Function
+  const handleLogoutUser = async () => {
+    try {
+      const res = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (data) {
+        toast.success("Logout Successfull");
+        router.push("/login");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <Context.Provider
       value={{
@@ -81,6 +104,7 @@ const ContextProvider = ({ children }) => {
         setRegisterUser,
         handleSignupSubmit,
         handleLoginSubmit,
+        handleLogoutUser,
       }}
     >
       {children}
