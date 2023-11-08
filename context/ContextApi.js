@@ -46,7 +46,31 @@ const ContextProvider = ({ children }) => {
   };
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    console.log(loginUser);
+    try {
+      const res = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: loginUser.email,
+          password: loginUser.password,
+        }),
+      });
+      const data = await res.json();
+      if (data) {
+        toast.success("Login Successfull");
+        router.push("/");
+        setLoginUser({
+          email: "",
+          password: "",
+        });
+      } else {
+        toast.error("Invalid Credentials");
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
   return (
     <Context.Provider
