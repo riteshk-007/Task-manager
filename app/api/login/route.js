@@ -3,8 +3,10 @@ import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+import connectDB from "@/db/MongoDB";
 
 export const POST = async (req) => {
+  await connectDB();
   const { email, password } = await req.json();
 
   if (!email || !password) {

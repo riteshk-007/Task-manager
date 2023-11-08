@@ -60,7 +60,7 @@ const ContextProvider = ({ children }) => {
       const data = await res.json();
       if (data) {
         toast.success("Login Successfull");
-        router.push("/");
+        router.push("/dashboard");
         setLoginUser({
           email: "",
           password: "",

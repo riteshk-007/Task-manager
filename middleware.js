@@ -13,12 +13,13 @@ export function middleware(request) {
 
   const loggedInUserNotAccessPath =
     request.nextUrl.pathname === "/login" ||
-    request.nextUrl.pathname === "/signup";
+    request.nextUrl.pathname === "/signup" ||
+    request.nextUrl.pathname === "/";
 
   if (loggedInUserNotAccessPath) {
     // if user is logged in, redirect to home page
     if (AuthToken) {
-      return NextResponse.redirect(new URL("/", request.nextUrl));
+      return NextResponse.redirect(new URL("/dashboard", request.nextUrl));
     }
   } else {
     // if user is not logged in, redirect to login page
@@ -30,12 +31,12 @@ export function middleware(request) {
         );
       }
       return AuthToken
-        ? NextResponse.redirect(new URL("/", request.url))
+        ? NextResponse.redirect(new URL("/dashboard", request.url))
         : NextResponse.redirect(new URL("/login", request.nextUrl));
     }
   }
 }
 
 export const config = {
-  matcher: ["/", "/login", "/signup", "/api/:path*"],
+  matcher: ["/", "/dashboard", "/login", "/signup", "/api/:path*"],
 };
