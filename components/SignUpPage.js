@@ -14,10 +14,10 @@ const SignUpPage = () => {
     <section className="text-gray-600 body-font w-full flex items-center justify-center h-screen">
       <div className="container mx-auto flex px-5 py-24 md:flex-row flex-col items-center">
         <div className="lg:max-w-lg lg:w-full md:w-1/2 w-5/6 mb-10 md:mb-0">
-          <h1 className="font-bold text-white text-8xl">
+          <h1 className="font-bold text-white md:text-8xl text-4xl mt-4 text-center md:text-start">
             Task<span className="text-red-600">ly</span>
           </h1>
-          <p className="text-gray-300 text-sm font-semibold  mx-2 py-4">
+          <p className="text-gray-300 text-sm font-semibold  mx-2 md:py-4 text-center md:text-start">
             Task management made easy. Create, assign, and track tasks with ease
             and simplicity.
           </p>
@@ -29,7 +29,7 @@ const SignUpPage = () => {
             </h2>
           </div>
 
-          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+          <div className="md:mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form className="space-y-6" onSubmit={handleSignupSubmit}>
               <div>
                 <label
