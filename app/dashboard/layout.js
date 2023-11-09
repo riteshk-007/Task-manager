@@ -2,7 +2,7 @@ import SideNav from "@/components/SideNav";
 
 const Layout = ({ children }) => {
   return (
-    <div className="flex justify-end items-start">
+    <div className="block md:flex items-center justify-end">
       <SideNav />
       {children}
     </div>
