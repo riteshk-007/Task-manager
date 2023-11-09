@@ -17,7 +17,9 @@ const Header = () => {
         href="/dashboard/user"
         className="md:bg-black bg-[#1e1e1e] px-3 py-1 md:py-2 rounded-md md:rounded-xl shadow-2xl cursor-pointer"
       >
-        <p className="font-semibold text-xs md:text-sm">{name}</p>
+        <p className="font-semibold text-xs md:text-sm">
+          {currentUser ? `Hi, ${name}` : "User"}
+        </p>
       </Link>
     </div>
   );

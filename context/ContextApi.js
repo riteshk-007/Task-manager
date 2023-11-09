@@ -33,18 +33,26 @@ const ContextProvider = ({ children }) => {
           password: registerUser.password,
         }),
       });
+
       const data = await res.json();
-      if (data) {
-        toast.success("Registration Successfull");
+
+      if (data.msg === "User created successfully") {
+        toast.success("User created successfully");
         router.push("/login");
         setRegisterUser({
           name: "",
           email: "",
           password: "",
         });
+      } else if (data.msg === "User already exists") {
+        // Throw an error
+        toast.error("User already exists");
+      } else {
+        toast.error(data.msg);
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error);
+      toast.error(error.msg);
     }
   };
 
@@ -63,15 +71,15 @@ const ContextProvider = ({ children }) => {
         }),
       });
       const data = await res.json();
-      if (data) {
-        toast.success("Login Successfull");
+      if (data.msg === "Login successful") {
+        toast.success("Login successful");
         router.push("/dashboard");
         setLoginUser({
           email: "",
           password: "",
         });
       } else {
-        toast.error("Invalid Credentials");
+        toast.error(data.msg);
       }
     } catch (error) {
       toast.error(error.message);
@@ -89,7 +97,7 @@ const ContextProvider = ({ children }) => {
       });
       const data = await res.json();
       if (data) {
-        toast.success("Logout Successfull");
+        toast.success("Logout Successfully");
         router.push("/login");
       }
     } catch (error) {
@@ -111,7 +119,7 @@ const ContextProvider = ({ children }) => {
       }
     };
     getCurrentUser();
-  }, []);
+  }, [loginUser]);
   return (
     <Context.Provider
       value={{

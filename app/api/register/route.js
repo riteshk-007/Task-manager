@@ -5,19 +5,33 @@ import User from "@/models/User";
 
 export const POST = async (req) => {
   const { name, email, password } = await req.json();
-
-  if (!name || !email || !password) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
-  const ismyPassword = bcrypt.hashSync(password, 10);
   await connectDB();
-  const user = await User.create({ name, email, password: ismyPassword });
-  if (!user) {
+  try {
+    if (!name || !email || !password) {
+      return NextResponse.json(
+        { msg: "Please fill all fields" },
+        { status: 400 }
+      );
+    } else {
+      const isNewPassword = await bcrypt.hashSync(password, 10);
+      const user = await User.create({ name, email, password: isNewPassword });
+
+      if (user) {
+        return NextResponse.json(
+          { msg: "User created successfully" },
+          { status: 201 }
+        );
+      } else {
+        // Throw an error if the user already exists
+        throw new Error("User already exists");
+      }
+    }
+  } catch (error) {
+    // Handle the error here
+    console.log(error);
     return NextResponse.json(
-      { error: "Something went wrong" },
-      { status: 500 }
+      { msg: "User already exists", error },
+      { status: 400 }
     );
   }
-
-  return NextResponse.json({ user }, { status: 200 });
 };
