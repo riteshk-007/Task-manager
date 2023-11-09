@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 export const Context = createContext();
@@ -15,6 +15,7 @@ const ContextProvider = ({ children }) => {
     email: "",
     password: "",
   });
+  const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
 
   // Signup User Function
@@ -95,6 +96,22 @@ const ContextProvider = ({ children }) => {
       toast.error(error.message);
     }
   };
+
+  // get current user
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      try {
+        const res = await fetch("/api/current-user");
+        const data = await res.json();
+        if (data) {
+          setCurrentUser(data.detail);
+        }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    };
+    getCurrentUser();
+  }, []);
   return (
     <Context.Provider
       value={{
@@ -105,6 +122,7 @@ const ContextProvider = ({ children }) => {
         handleSignupSubmit,
         handleLoginSubmit,
         handleLogoutUser,
+        currentUser,
       }}
     >
       {children}

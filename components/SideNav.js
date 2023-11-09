@@ -70,7 +70,7 @@ const SideNav = () => {
             </li>
             <li className="flex w-full rounded-md cursor-pointer">
               <Link
-                href="/dashboard"
+                href="/dashboard/user"
                 className="flex  items-center justify-start gap-2 p-2 text-gray-300 hover:bg-gray-700 hover:text-white rounded-md w-full hover:shadow-md"
               >
                 <FaUserTie />
