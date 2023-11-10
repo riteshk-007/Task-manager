@@ -16,6 +16,7 @@ const ContextProvider = ({ children }) => {
     password: "",
   });
   const [currentUser, setCurrentUser] = useState(null);
+  const [change, setChange] = useState(false);
   const router = useRouter();
 
   // Signup User Function
@@ -131,6 +132,8 @@ const ContextProvider = ({ children }) => {
         handleLoginSubmit,
         handleLogoutUser,
         currentUser,
+        change,
+        setChange,
       }}
     >
       {children}
