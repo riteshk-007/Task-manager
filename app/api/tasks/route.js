@@ -8,9 +8,12 @@ export const POST = async (req) => {
   const { title, content, userId } = await req.json();
   try {
     const task = new Task({ title, content, userId });
-    const createdTask = await task.save();
+    await task.save();
 
-    return NextResponse.json(createdTask, { status: 201 });
+    return NextResponse.json(
+      { msg: "Task created successfully" },
+      { status: 201 }
+    );
   } catch (error) {
     return NextResponse.json(
       { message: "failed to create Task!" },

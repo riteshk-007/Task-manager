@@ -1,7 +1,13 @@
 "use client";
 
+import { Context } from "@/context/ContextApi";
+import { useContext } from "react";
 import { MdClose } from "react-icons/md";
 const TaskForm = ({ setShow }) => {
+  const { createTask, setCreateTask, CreateTask } = useContext(Context);
+  const handleChnage = (e) => {
+    setCreateTask({ ...createTask, [e.target.name]: e.target.value });
+  };
   return (
     <div className="bg-black w-full md:w-[800px] h-full  md:h-[500px] rounded-lg shadow-lg z-[100] relative flex items-center justify-center">
       <button
@@ -12,7 +18,7 @@ const TaskForm = ({ setShow }) => {
       </button>
       <div className="w-full flex items-center justify-center flex-col">
         <h1 className="text-2xl font-bold text-white mb-6">Add Task</h1>
-        <form className="md:w-1/2 w-3/4">
+        <form className="md:w-1/2 w-3/4" onSubmit={CreateTask}>
           <div className="mb-6">
             <label
               htmlFor="title"
@@ -23,9 +29,12 @@ const TaskForm = ({ setShow }) => {
             <input
               type="title"
               id="title"
+              name="title"
               className="shadow-sm  border 0 text-sm rounded-lg  block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
               placeholder="Title"
               required
+              value={createTask?.title}
+              onChange={handleChnage}
             />
           </div>
           <div className="mb-6">
@@ -38,9 +47,12 @@ const TaskForm = ({ setShow }) => {
             <input
               type="text"
               id="content"
+              name="content"
               placeholder="Content"
               className="shadow-sm  border  text-sm rounded-lg block w-full p-2.5 bg-gray-700 border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500 shadow-sm-light"
               required
+              value={createTask?.content}
+              onChange={handleChnage}
             />
           </div>
           <button

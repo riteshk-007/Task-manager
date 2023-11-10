@@ -17,6 +17,7 @@ const ContextProvider = ({ children }) => {
   });
   const [currentUser, setCurrentUser] = useState(null);
   const [change, setChange] = useState(false);
+  const [createTask, setCreateTask] = useState({ title: "", content: "" });
   const router = useRouter();
 
   // Signup User Function
@@ -121,6 +122,40 @@ const ContextProvider = ({ children }) => {
     };
     getCurrentUser();
   }, [loginUser]);
+
+  // create task
+
+  const CreateTask = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: createTask.title,
+          content: createTask.content,
+          userId: currentUser._id,
+        }),
+      });
+      const data = await res.json();
+      if (data.msg === "Task created successfully") {
+        toast.success("Task created successfully");
+        setCreateTask({
+          title: "",
+          content: "",
+        });
+        router.refresh();
+      } else {
+        toast.error(data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
   return (
     <Context.Provider
       value={{
@@ -134,6 +169,9 @@ const ContextProvider = ({ children }) => {
         currentUser,
         change,
         setChange,
+        CreateTask,
+        createTask,
+        setCreateTask,
       }}
     >
       {children}
