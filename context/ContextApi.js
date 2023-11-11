@@ -1,5 +1,5 @@
 "use client";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -21,7 +21,7 @@ const ContextProvider = ({ children }) => {
   const [getTask, setGetTask] = useState([]);
   const [Task, setTask] = useState([]);
   const router = useRouter();
-  const path = usePathname();
+
   // Signup User Function
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
@@ -148,7 +148,9 @@ const ContextProvider = ({ children }) => {
           title: "",
           content: "",
         });
+        router.push("/dashboard");
         router.refresh();
+        window.location.reload();
       } else {
         toast.error(data.msg);
       }
@@ -192,8 +194,11 @@ const ContextProvider = ({ children }) => {
       const data = await res.json();
       if (data.msg === "Task Updated") {
         toast.success("Task Updated");
-        router.refresh();
         router.push("/dashboard");
+        router.refresh();
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       } else {
         toast.error(data.msg);
       }
@@ -217,6 +222,35 @@ const ContextProvider = ({ children }) => {
       if (data.msg === "Delete Task") {
         toast.success("Delete Task");
         router.push("/dashboard");
+        router.refresh();
+        setTimeout(() => {
+          window.location.reload();
+        }, 800);
+      } else {
+        toast.error(data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  // update user info
+  const updateUserInfo = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/current-user", {
+        method: "PUT",
+        headers: {
+          "content-type": "applicationa/json",
+        },
+        body: JSON.stringify(currentUser.name, currentUser.email),
+      });
+      const data = await res.json();
+      if (data.msg === "User updated successfully") {
+        toast.success("User updated successfully");
+        router.push("/dashboard");
+        window.location.reload();
       } else {
         toast.error(data.msg);
       }
@@ -246,6 +280,7 @@ const ContextProvider = ({ children }) => {
         setTask,
         UpdateTask,
         DeleteTask,
+        updateUserInfo,
       }}
     >
       {children}
