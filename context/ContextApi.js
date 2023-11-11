@@ -18,6 +18,7 @@ const ContextProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [change, setChange] = useState(false);
   const [createTask, setCreateTask] = useState({ title: "", content: "" });
+  const [getTask, setGetTask] = useState([]);
   const router = useRouter();
 
   // Signup User Function
@@ -134,9 +135,9 @@ const ContextProvider = ({ children }) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          title: createTask.title,
-          content: createTask.content,
-          userId: currentUser._id,
+          title: createTask?.title,
+          content: createTask?.content,
+          userId: currentUser?._id,
         }),
       });
       const data = await res.json();
@@ -146,7 +147,7 @@ const ContextProvider = ({ children }) => {
           title: "",
           content: "",
         });
-        router.refresh();
+        window.location.reload();
       } else {
         toast.error(data.msg);
       }
@@ -155,6 +156,21 @@ const ContextProvider = ({ children }) => {
       toast.error(error.message);
     }
   };
+  // get task by user id
+  useEffect(() => {
+    const getTaskByUserId = async () => {
+      try {
+        const res = await fetch(`/api/all-user/${currentUser?._id}/tasks`);
+        const data = await res.json();
+        if (data.msg === "Get all tasks") {
+          setGetTask(data.task);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getTaskByUserId();
+  }, [currentUser, router]);
 
   return (
     <Context.Provider
@@ -172,6 +188,7 @@ const ContextProvider = ({ children }) => {
         CreateTask,
         createTask,
         setCreateTask,
+        getTask,
       }}
     >
       {children}
