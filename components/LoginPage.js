@@ -102,6 +102,12 @@ const LoginPage = () => {
                 Sign Up
               </Link>
             </p>
+            <div className="flex flex-col text-white mt-5 bg-gray-900 rounded-md p-2 shadow-md">
+              <p className="mx-auto md:w-1/2 text-[13px]">
+                Testing a/c : test@gmail.com
+              </p>
+              <p className="mx-auto md:w-1/2 text-[13px]">Password : test</p>
+            </div>
           </div>
         </div>
       </div>
