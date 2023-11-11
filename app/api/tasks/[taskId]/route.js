@@ -25,7 +25,7 @@ export const PUT = async (req, { params }) => {
     task.content = content;
     task.status = status;
     task = await task.save();
-    return NextResponse.json(task, { status: 200 });
+    return NextResponse.json({ msg: "Task Updated" }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(
@@ -38,7 +38,7 @@ export const DELETE = async (req, { params }) => {
   const { taskId } = params;
   try {
     const task = await Task.findByIdAndDelete(taskId);
-    return NextResponse.json(task, { status: 200 });
+    return NextResponse.json({ msg: "Delete Task" }, { status: 200 });
   } catch (error) {
     console.log(error);
     return NextResponse.json(

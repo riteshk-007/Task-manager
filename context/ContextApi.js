@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
@@ -19,8 +19,9 @@ const ContextProvider = ({ children }) => {
   const [change, setChange] = useState(false);
   const [createTask, setCreateTask] = useState({ title: "", content: "" });
   const [getTask, setGetTask] = useState([]);
+  const [Task, setTask] = useState([]);
   const router = useRouter();
-
+  const path = usePathname();
   // Signup User Function
   const handleSignupSubmit = async (e) => {
     e.preventDefault();
@@ -147,7 +148,7 @@ const ContextProvider = ({ children }) => {
           title: "",
           content: "",
         });
-        window.location.reload();
+        router.refresh();
       } else {
         toast.error(data.msg);
       }
@@ -172,6 +173,58 @@ const ContextProvider = ({ children }) => {
     getTaskByUserId();
   }, [currentUser, router]);
 
+  // update task by id
+
+  const UpdateTask = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/tasks/${Task?._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: Task?.title,
+          content: Task?.content,
+          status: Task?.status,
+        }),
+      });
+      const data = await res.json();
+      if (data.msg === "Task Updated") {
+        toast.success("Task Updated");
+        router.refresh();
+        router.push("/dashboard");
+      } else {
+        toast.error(data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+
+  // delete task by id
+  const DeleteTask = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch(`/api/tasks/${Task?._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await res.json();
+      if (data.msg === "Delete Task") {
+        toast.success("Delete Task");
+        router.push("/dashboard");
+      } else {
+        toast.error(data.msg);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
   return (
     <Context.Provider
       value={{
@@ -189,6 +242,10 @@ const ContextProvider = ({ children }) => {
         createTask,
         setCreateTask,
         getTask,
+        Task,
+        setTask,
+        UpdateTask,
+        DeleteTask,
       }}
     >
       {children}
